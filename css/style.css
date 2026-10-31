@@ -1,0 +1,216 @@
+:root {
+  --tlo: #fbf6ee;
+  --panel: #ffffff;
+  --tekst: #1f2a44;
+  --tekst-2: #5b6478;
+  --linia: #e6dfd3;
+  --akcent: #e4572e;
+  --akcent-ciemny: #c2421d;
+  --zielony: #2e9e5b;
+  --zolty: #fff1c9;
+  --promien: 14px;
+  --pismo-ui: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--tlo);
+  color: var(--tekst);
+  font-family: var(--pismo-ui);
+  line-height: 1.45;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+
+/* Nagłówek */
+.naglowek-strony {
+  display: flex; align-items: center; gap: 16px;
+  padding: 20px clamp(16px, 4vw, 40px);
+  border-bottom: 2px dashed var(--linia);
+}
+.naglowek-strony h1 { margin: 0; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; letter-spacing: -0.01em; }
+.naglowek-strony p { margin: 2px 0 0; color: var(--tekst-2); }
+.logo {
+  flex: none; width: 56px; height: 56px; border-radius: 16px;
+  display: grid; place-items: center; font-size: 30px;
+  background: var(--zolty); transform: rotate(-6deg);
+  box-shadow: 0 3px 0 #f2d58a;
+}
+
+/* Układ */
+.uklad {
+  display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 28px;
+  padding: 24px clamp(16px, 4vw, 40px) 60px;
+  max-width: 1400px; margin: 0 auto;
+}
+.panel { position: sticky; top: 16px; align-self: start; max-height: calc(100vh - 32px); overflow: auto; padding-right: 4px; }
+.grupa + .grupa { margin-top: 20px; }
+.grupa h3 { margin: 0 0 8px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--tekst-2); }
+.kafle { display: grid; gap: 8px; }
+.kafel {
+  display: grid; grid-template-columns: 44px 1fr; grid-template-rows: auto auto; column-gap: 10px;
+  text-align: left; padding: 10px 12px; cursor: pointer;
+  background: var(--panel); border: 2px solid var(--linia); border-radius: var(--promien);
+  transition: border-color .15s, transform .15s, box-shadow .15s;
+}
+.kafel:hover { border-color: #d7c9b3; transform: translateY(-1px); }
+.kafel:focus-visible { outline: 3px solid #7aa7e0; outline-offset: 2px; }
+.kafel[aria-pressed="true"] { border-color: var(--akcent); box-shadow: 0 3px 0 var(--akcent); }
+.kafel-ikona { grid-row: span 2; font-size: 28px; display: grid; place-items: center; background: var(--tlo); border-radius: 10px; }
+.kafel-nazwa { font-weight: 800; }
+.kafel-opis { font-size: 0.85rem; color: var(--tekst-2); }
+
+/* Ustawienia */
+.ustawienia {
+  background: var(--panel); border: 2px solid var(--linia); border-radius: var(--promien);
+  padding: 18px 20px; margin-bottom: 24px;
+}
+.ustawienia h2 { margin: 0 0 12px; font-size: 1.3rem; }
+.opcje { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px 16px; }
+.opcje-wspolne { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--linia); align-items: end; }
+.pole-opcji { display: flex; flex-direction: column; gap: 4px; font-size: 0.9rem; font-weight: 600; }
+.pole-opcji[hidden] { display: none; }
+.pole-opcji select, .pole-opcji input, .pole-opcji textarea {
+  font-weight: 400; padding: 8px 10px; border: 2px solid var(--linia); border-radius: 10px; background: #fff;
+}
+.pole-opcji textarea { resize: vertical; }
+.pole-opcji :focus-visible, .pole-check input:focus-visible { outline: 3px solid #7aa7e0; outline-offset: 1px; }
+.pole-check { display: flex; gap: 8px; align-items: center; font-weight: 600; font-size: 0.9rem; padding-bottom: 10px; }
+.pole-check[hidden] { display: none; }
+.pole-check input { width: 18px; height: 18px; accent-color: var(--akcent); }
+.przyciski { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.btn {
+  border: 0; border-radius: 12px; padding: 12px 18px; font-weight: 800; cursor: pointer;
+  transition: transform .1s, box-shadow .1s;
+}
+.btn:active { transform: translateY(2px); }
+.btn-glowny { background: var(--akcent); color: #fff; box-shadow: 0 3px 0 var(--akcent-ciemny); }
+.btn-drugi { background: var(--zolty); box-shadow: 0 3px 0 #f2d58a; }
+.btn:focus-visible { outline: 3px solid #7aa7e0; outline-offset: 2px; }
+
+/* Podgląd kartek A4 */
+.obszar-podgladu { overflow: hidden; }
+.podglad {
+  width: 210mm; transform-origin: top left; transform: scale(var(--skala, 1));
+  display: flex; flex-direction: column; gap: 24px;
+}
+.strona {
+  width: 210mm; height: 297mm; padding: 12mm 12mm 9mm; background: #fff; overflow: hidden;
+  box-shadow: 0 2px 0 var(--linia), 0 10px 30px rgba(60, 40, 10, .08); border-radius: 4px;
+  display: flex; flex-direction: column; font-family: var(--pismo-ui); color: #1f2a44;
+}
+.karta-glowa { display: flex; justify-content: space-between; gap: 20px; font-size: 13pt; color: #444; }
+.karta-glowa span { display: flex; align-items: flex-end; gap: 6px; }
+.linia-pisania { display: inline-block; width: 70mm; border-bottom: 1.5px solid #888; height: 1.1em; }
+.linia-pisania.krotka { width: 35mm; }
+.karta-naglowek { margin: 4mm 0 0; font-size: 11pt; color: #666; text-align: center; }
+.karta-tytul { margin: 5mm 0 2mm; font-size: 22pt; font-weight: 800; text-align: center; }
+.karta-polecenie { margin: 0 0 5mm; font-size: 13pt; text-align: center; color: #333; padding: 0 6mm; }
+.karta-tresc { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+.karta-stopka { font-size: 8pt; color: #aaa; text-align: right; margin-top: 3mm; }
+.strona-rozw .karta-glowa { color: #999; font-size: 10pt; }
+.rys { width: 100%; height: auto; max-height: 100%; display: block; flex: 0 1 auto; min-height: 0; }
+.rys.pelna { flex: 1; }
+.rys text { font-family: var(--pismo-ui); fill: #1f2a44; }
+.odstep { height: 8mm; flex: none; }
+.podpis { font-size: 14pt; margin: 5mm 0 0; text-align: center; }
+.blad { padding: 40px; background: #fff; border-radius: var(--promien); }
+
+/* Połącz kropki */
+.kropki .punkty circle { fill: #1f2a44; }
+.kropki .punkty circle.pierwsza { fill: var(--zielony); }
+.kropki { max-height: 205mm; }
+.linia-pisania { vertical-align: bottom; }
+
+/* Pisanie po śladzie */
+.pisanie .pole { fill: #fff6d6; }
+.pisanie .lin-g { stroke: #9ab; stroke-width: 0.8; }
+.pisanie .lin-s { stroke: #9ab; stroke-width: 0.8; stroke-dasharray: 4 3; }
+.pisanie .lin-b { stroke: #d66; stroke-width: 1.2; }
+.pisanie .kratka-l { stroke: #b9cde0; stroke-width: 0.6; }
+.pisanie text.pis-wzor { fill: #1f2a44; }
+.pisanie text.pis-slad { fill: #c4c9d3; }
+
+/* Wykreślanka */
+.wykreslanka { border-collapse: collapse; margin: 0 auto; }
+.wykreslanka td {
+  width: calc(150mm / var(--n)); height: calc(150mm / var(--n)); max-width: 15mm; max-height: 15mm;
+  text-align: center; border: 1px solid #cfd5df; font-weight: 700; font-family: 'Andika', var(--pismo-ui);
+  font-size: calc(80mm / var(--n));
+}
+.wykreslanka td.hit { background: #ffd6c9; }
+.lista-slow { list-style: none; padding: 0; margin: 7mm 0 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 3mm 8mm; font-size: 14pt; font-weight: 700; }
+.lista-slow .em { font-size: 18pt; }
+
+/* Działania */
+.dzialania { columns: 2; column-gap: 18mm; padding: 0; margin: 2mm 0 0; list-style: none; counter-reset: z; font-size: 18pt; }
+.dzialania li { break-inside: avoid; display: flex; align-items: center; gap: 4mm; margin-bottom: 6mm; counter-increment: z; }
+.dzialania li::before { content: counter(z) "."; font-size: 11pt; color: #999; width: 8mm; }
+.okienko {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 15mm; height: 12mm;
+  border: 2px solid #1f2a44; border-radius: 3mm; font-weight: 800; color: var(--akcent);
+}
+.okienko.kolko { min-width: 12mm; border-radius: 50%; }
+.okienko.dane { color: #1f2a44; border-color: #cfd5df; background: #f7f8fa; }
+.ciagi { display: flex; flex-direction: column; gap: 7mm; font-size: 17pt; }
+.ciag { display: flex; gap: 4mm; }
+.klucz { display: flex; flex-wrap: wrap; justify-content: center; gap: 2mm; margin-bottom: 9mm; }
+.klucz div { display: flex; flex-direction: column; align-items: center; border: 1.5px solid #cfd5df; border-radius: 2mm; min-width: 13mm; }
+.klucz b { background: var(--zolty); width: 100%; text-align: center; font-size: 13pt; }
+.klucz span { font-size: 15pt; font-weight: 800; padding: 1mm 0; }
+.szyfr { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 8mm 5mm; width: 100%; }
+.szyfr .kol { display: flex; flex-direction: column; align-items: center; gap: 2mm; font-size: 16pt; }
+.szyfr .okienko.litera { border-color: var(--akcent); border-style: dashed; color: var(--zielony); }
+.strona h3 { margin: 0 0 2mm; font-size: 12pt; color: #666; }
+
+/* Litery, rozsypanka */
+.karty-liter { display: grid; grid-template-columns: repeat(2, 1fr); gap: 7mm 10mm; width: 100%; }
+.karta-litery { display: flex; align-items: center; gap: 5mm; border: 1.5px dashed #cfd5df; border-radius: 4mm; padding: 4mm; }
+.em-duze { font-size: 34pt; line-height: 1; }
+.em-sredni { font-size: 26pt; line-height: 1; width: 14mm; text-align: center; }
+.wyraz { display: flex; gap: 1mm; flex-wrap: wrap; }
+.kratka {
+  display: inline-flex; align-items: center; justify-content: center; width: 9mm; height: 11mm;
+  border-bottom: 2px solid #1f2a44; font-size: 18pt; font-weight: 700; font-family: 'Andika', var(--pismo-ui);
+}
+.kratka.luka { border: 2px solid var(--akcent); border-radius: 2mm; color: var(--zielony); }
+.kratka.mala { width: 8mm; height: 9mm; font-size: 14pt; border: 1.5px solid #cfd5df; border-radius: 2mm; }
+.rozsypanka { display: flex; flex-direction: column; gap: 6mm; width: 100%; }
+.wiersz-rozs { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 5mm; padding-bottom: 4mm; border-bottom: 1px dashed #e0e3ea; }
+.mix { display: flex; gap: 1.5mm; flex-wrap: wrap; }
+.kafelek {
+  display: inline-flex; width: 9mm; height: 9mm; align-items: center; justify-content: center;
+  background: var(--zolty); border-radius: 2mm; font-weight: 800; font-size: 15pt; font-family: 'Andika', var(--pismo-ui);
+  transform: rotate(-4deg);
+}
+.kafelek:nth-child(even) { transform: rotate(5deg); }
+
+/* Sudoku */
+.plansze { display: flex; flex-direction: column; gap: 12mm; align-items: center; }
+.sudoku { border-collapse: collapse; border: 3px solid #1f2a44; }
+.sudoku td { width: 19mm; height: 19mm; border: 1px solid #9aa3b2; text-align: center; font-size: 24pt; font-weight: 800; }
+.sudoku.n6 td { width: 15mm; height: 15mm; font-size: 18pt; }
+.sudoku td.pg { border-right: 3px solid #1f2a44; }
+.sudoku td.dg { border-bottom: 3px solid #1f2a44; }
+.sudoku td.wpis { color: var(--akcent); }
+.znak { font-size: 16pt; }
+
+/* Na wąskich ekranach panel przechodzi nad podgląd */
+@media (max-width: 900px) {
+  .uklad { grid-template-columns: minmax(0, 1fr); }
+  .panel { position: static; max-height: none; overflow: visible; }
+  .kafle { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+}
+
+/* Druk: tylko kartki, każda na osobnej stronie A4 */
+@page { size: A4; margin: 0; }
+@media print {
+  body { background: #fff; }
+  .naglowek-strony, .panel, .ustawienia { display: none !important; }
+  .uklad { display: block; padding: 0; max-width: none; }
+  .obszar-podgladu { height: auto !important; overflow: visible; }
+  .podglad { transform: none !important; gap: 0; width: auto; }
+  .strona { box-shadow: none; border-radius: 0; break-after: page; page-break-after: always; }
+  .strona:last-child { break-after: auto; page-break-after: auto; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

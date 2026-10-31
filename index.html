@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Generator kart pracy dla dzieci</title>
+  <meta name="description" content="Darmowy generator kart pracy dla dzieci: szlaczki, pisanie po śladzie, labirynty, połącz kropki, wykreślanki i działania. Gotowe do druku na A4.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Nunito:wght@400;600;800&family=Playwrite+PL:wght@300&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="naglowek-strony">
+    <div class="logo" aria-hidden="true">✂️</div>
+    <div>
+      <h1>Generator kart pracy</h1>
+      <p>Wybierz zabawę, ustaw poziom i wydrukuj. Każde kliknięcie „Losuj” tworzy nową kartę.</p>
+    </div>
+  </header>
+
+  <main class="uklad">
+    <aside class="panel">
+      <nav id="lista-gier" aria-label="Rodzaje kart"></nav>
+    </aside>
+
+    <section class="glowna">
+      <div id="ustawienia" class="ustawienia">
+        <h2 id="nazwa-gry"></h2>
+        <div id="opcje" class="opcje"></div>
+        <div class="opcje opcje-wspolne">
+          <label class="pole-opcji"><span>Podpis na karcie (np. klasa, przedszkole)</span><input id="naglowek" type="text" maxlength="80" placeholder="np. Grupa Biedronki"></label>
+          <label class="pole-opcji"><span>Numer karty</span><input id="nr-karty" type="number" min="1" inputmode="numeric" title="Ten sam numer = ta sama karta"></label>
+          <label class="pole-check" id="pole-rozw"><input id="rozw" type="checkbox" checked> Dołącz stronę z rozwiązaniem</label>
+        </div>
+        <div class="przyciski">
+          <button id="losuj" type="button" class="btn btn-drugi">🎲 Losuj nową kartę</button>
+          <button id="drukuj" type="button" class="btn btn-glowny">🖨️ Drukuj / zapisz PDF</button>
+        </div>
+      </div>
+
+      <div class="obszar-podgladu">
+        <div id="podglad" class="podglad" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/core.js"></script>
+  <script src="js/gry/pisanie.js"></script>
+  <script src="js/gry/szlaczki.js"></script>
+  <script src="js/gry/sciezki.js"></script>
+  <script src="js/gry/kropki.js"></script>
+  <script src="js/gry/labirynt.js"></script>
+  <script src="js/gry/przerysuj.js"></script>
+  <script src="js/gry/litery.js"></script>
+  <script src="js/gry/rozsypanka.js"></script>
+  <script src="js/gry/wykreslanka.js"></script>
+  <script src="js/gry/dopasuj.js"></script>
+  <script src="js/gry/matematyka.js"></script>
+  <script src="js/gry/sudoku.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
