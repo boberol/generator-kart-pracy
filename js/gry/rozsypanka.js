@@ -10,6 +10,7 @@
     opcje: [
       { id: 'poziom', etykieta: 'Poziom trudności', wybory: KP.POZIOMY, domyslnie: 'latwy' },
       { id: 'temat', etykieta: 'Temat', wybory: KP.tematy, domyslnie: 'wszystkie' },
+      KP.opcjaWlasne,
       { id: 'litery', etykieta: 'Litery', wybory: KP.WIELKOSC, domyslnie: 'wielkie' },
     ],
 
@@ -17,8 +18,8 @@
       const poz = o.poziom || 'latwy';
       const [minDl, maxDl] = poz === 'latwy' ? [3, 4] : poz === 'sredni' ? [4, 6] : [6, 12];
       const ile = poz === 'latwy' ? 6 : 8;
-      let kand = KP.slowaZTematu(o.temat).filter((w) => w.slowo.length >= minDl && w.slowo.length <= maxDl);
-      if (kand.length < ile) kand = KP.slowaZTematu(o.temat).filter((w) => w.slowo.length >= 3);
+      let kand = KP.slowaZTematu(o.temat, o).filter((w) => w.slowo.length >= minDl && w.slowo.length <= maxDl);
+      if (kand.length < ile) kand = KP.slowaZTematu(o.temat, o).filter((w) => w.slowo.length >= 3);
       const wybrane = R.shuffle(kand).slice(0, ile);
       const pokazObrazek = poz !== 'trudny';
 

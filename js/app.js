@@ -3,7 +3,7 @@
   'use strict';
 
   const GRUPY = [
-    { id: 'pisanie', nazwa: 'Pisanie i grafomotoryka', gry: ['pisanie', 'szlaczki', 'sciezki', 'kropki', 'labirynt', 'przerysuj'] },
+    { id: 'pisanie', nazwa: 'Pisanie i grafomotoryka', gry: ['pisanie', 'szlaczki', 'sciezki', 'papier', 'kropki', 'labirynt', 'przerysuj'] },
     { id: 'slowa', nazwa: 'Litery i słowa', gry: ['litery', 'rozsypanka', 'wykreslanka', 'dopasuj'] },
     { id: 'liczby', nazwa: 'Liczby i logika', gry: ['matematyka', 'sudoku'] },
   ];
@@ -29,11 +29,12 @@
     g.opcje.forEach((op) => {
       if (!p.has(op.id)) return;
       const v = p.get(op.id);
-      if (op.typ === 'tekst' || op.wybory.some((w) => w.value === v)) stan.opcje[op.id] = v;
+      if (op.typ || op.wybory.some((w) => w.value === v)) stan.opcje[op.id] = v;
     });
     stan.nr = parseInt(p.get('nr'), 10) || nowyNumer();
     stan.rozwiazanie = p.get('rozw') !== '0';
     stan.naglowek = p.get('naglowek') || '';
+    stan.cb = p.get('cb') === '1';
   }
 
   function zapiszAdres() {
@@ -43,6 +44,7 @@
     p.set('nr', stan.nr);
     if (!stan.rozwiazanie) p.set('rozw', '0');
     if (stan.naglowek) p.set('naglowek', stan.naglowek);
+    if (stan.cb) p.set('cb', '1');
     history.replaceState(null, '', '#' + p.toString());
   }
 
@@ -81,8 +83,15 @@
     const box = $('#opcje');
     box.innerHTML = g.opcje.map((op) => {
       const ukryj = widoczna(op) ? '' : ' hidden';
+      const wart = KP.esc(stan.opcje[op.id] || '');
       if (op.typ === 'tekst') {
-        return `<label class="pole-opcji"${ukryj}><span>${op.etykieta}</span><textarea data-op="${op.id}" rows="4" maxlength="400">${KP.esc(stan.opcje[op.id] || '')}</textarea></label>`;
+        return `<label class="pole-opcji szerokie"${ukryj}><span>${op.etykieta}</span><textarea data-op="${op.id}" rows="4" maxlength="600">${wart}</textarea></label>`;
+      }
+      if (op.typ === 'linia') {
+        return `<label class="pole-opcji"${ukryj}><span>${op.etykieta}</span><input type="text" data-op="${op.id}" maxlength="80" value="${wart}"></label>`;
+      }
+      if (op.typ === 'kolor') {
+        return `<label class="pole-opcji pole-kolor"${ukryj}><span>${op.etykieta}</span><input type="color" data-op="${op.id}" value="${wart}"></label>`;
       }
       return `<label class="pole-opcji"${ukryj}><span>${op.etykieta}</span><select data-op="${op.id}">${op.wybory.map((w) =>
         `<option value="${KP.esc(w.value)}"${w.value === stan.opcje[op.id] ? ' selected' : ''}>${KP.esc(w.label)}</option>`).join('')}</select></label>`;
@@ -97,7 +106,7 @@
         });
         generuj();
       };
-      if (el.tagName === 'TEXTAREA') el.addEventListener('input', () => { clearTimeout(czasomierz); czasomierz = setTimeout(zmiana, 350); });
+      if (el.tagName === 'TEXTAREA' || el.type === 'text' || el.type === 'color') el.addEventListener('input', () => { clearTimeout(czasomierz); czasomierz = setTimeout(zmiana, 350); });
       else el.addEventListener('change', zmiana);
     });
   }
@@ -106,12 +115,13 @@
     const tytul = czyRozw ? `Rozwiązanie: ${wynik.tytul}` : wynik.tytul;
     const glowa = czyRozw
       ? '<div class="karta-glowa"><span>Dla nauczyciela / rodzica</span></div>'
-      : `<div class="karta-glowa"><span>Imię: <i class="linia-pisania"></i></span><span>Data: <i class="linia-pisania krotka"></i></span></div>`;
-    return `<article class="strona${czyRozw ? ' strona-rozw' : ''}">
+      : wynik.bezImienia ? '' : `<div class="karta-glowa"><span>Imię: <i class="linia-pisania"></i></span><span>Data: <i class="linia-pisania krotka"></i></span></div>`;
+    const ikona = wynik.bezIkony ? '' : `<span aria-hidden="true">${g.ikona}</span> `;
+    return `<article class="strona${czyRozw ? ' strona-rozw' : ''}${stan.cb ? ' czarno-biala' : ''}">
       ${glowa}
       ${stan.naglowek ? `<p class="karta-naglowek">${KP.esc(stan.naglowek)}</p>` : ''}
-      <h2 class="karta-tytul"><span aria-hidden="true">${g.ikona}</span> ${KP.esc(tytul)}</h2>
-      <p class="karta-polecenie">${KP.esc(wynik.polecenie)}</p>
+      ${tytul ? `<h2 class="karta-tytul">${ikona}${KP.esc(tytul)}</h2>` : ''}
+      ${wynik.polecenie ? `<p class="karta-polecenie">${KP.esc(wynik.polecenie)}</p>` : ''}
       <div class="karta-tresc">${czyRozw ? wynik.rozwiazanie : wynik.tresc}</div>
       <footer class="karta-stopka">Karta nr ${stan.nr} · ${KP.esc(g.nazwa)}</footer>
     </article>`;
@@ -162,6 +172,8 @@
     $('#losuj').addEventListener('click', () => { stan.nr = nowyNumer(); generuj(); });
     $('#drukuj').addEventListener('click', () => window.print());
     $('#rozw').addEventListener('change', (e) => { stan.rozwiazanie = e.target.checked; generuj(); });
+    $('#cb').checked = stan.cb;
+    $('#cb').addEventListener('change', (e) => { stan.cb = e.target.checked; generuj(); });
     let t;
     $('#naglowek').addEventListener('input', (e) => { clearTimeout(t); t = setTimeout(() => { stan.naglowek = e.target.value.trim(); generuj(); }, 300); });
     $('#nr-karty').addEventListener('change', (e) => {
@@ -175,6 +187,7 @@
       rysujOpcje();
       $('#rozw').checked = stan.rozwiazanie;
       $('#naglowek').value = stan.naglowek;
+      $('#cb').checked = stan.cb;
       generuj();
     });
     generuj();

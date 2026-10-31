@@ -152,3 +152,77 @@
     return pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('');
   };
 })();
+
+/* Własne wyrazy i rysowanie tekstu literkami (KP.literki). */
+(function () {
+  'use strict';
+
+  KP.tematy.push({ value: 'wlasne', label: 'Własne wyrazy' });
+  KP.tematyZObrazkami = KP.tematy.filter((t) => t.value !== 'wlasne');
+  KP.opcjaWlasne = {
+    id: 'wlasne', etykieta: 'Twoje wyrazy (oddziel przecinkami)', typ: 'tekst',
+    domyslnie: 'mama, tata, kot, dom, lody, rower, las, ser', gdy: { temat: 'wlasne' },
+  };
+
+  const slowaBazowe = KP.slowaZTematu;
+  KP.slowaZTematu = function (temat, o) {
+    if (temat !== 'wlasne') return slowaBazowe(temat);
+    const lista = String((o && o.wlasne) || '').split(/[,;\n]+/)
+      .map((s) => s.trim().toLocaleUpperCase('pl').replace(/[^A-ZĄĆĘŁŃÓŚŹŻ]/gu, ''))
+      .filter((s) => s.length >= 2);
+    const unik = Array.from(new Set(lista));
+    return (unik.length ? unik : ['MAMA', 'TATA', 'KOT', 'DOM']).map((slowo) => ({ slowo, obrazek: '', kat: 'wlasne' }));
+  };
+
+  /* Kolejność elementów listy: jak wpisano, losowo albo alfabetycznie. */
+  KP.OPCJA_KOLEJNOSC = { value: 'wpisana', label: 'Jak wpisano / po kolei' };
+  KP.KOLEJNOSCI = [KP.OPCJA_KOLEJNOSC, { value: 'losowa', label: 'Losowa' }, { value: 'alfabet', label: 'Alfabetyczna' }];
+  KP.uporzadkuj = function (lista, kolejnosc, R, klucz) {
+    const k = klucz || ((x) => String(x));
+    if (kolejnosc === 'losowa') return R.shuffle(lista);
+    if (kolejnosc === 'alfabet') return lista.slice().sort((a, b) => k(a).localeCompare(k(b), 'pl'));
+    return lista.slice();
+  };
+
+  /* Szerokość tekstu pisanego literkami przy wysokości pola środkowego xh.
+     Znaki, których nie ma w zestawie (np. wielkie litery), zwracane są jako "brak". */
+  const XH = 326.5;
+  KP.literkiUklad = function (tekst, xh, miara) {
+    const s = xh / XH;
+    const elementy = [];
+    let x = 0;
+    for (const ch of Array.from(tekst)) {
+      if (ch === ' ') { x += xh * 0.75; continue; }
+      const g = KP.literki && KP.literki[ch];
+      if (!g) { const w = miara ? miara(ch) : xh * 1.1; elementy.push({ brak: ch, x, w }); x += w + xh * 0.08; continue; }
+      elementy.push({ g, x, s });
+      x += g.w * s + xh * 0.05;
+    }
+    return { elementy, szer: x };
+  };
+
+  /* SVG ścieżek literek; styl: { kolor, grubosc, kreska ('pelna'|'kropki'|'kreski'), start } */
+  KP.literkiSvg = function (uklad, x0, baza, xh, styl) {
+    const gr = (styl.grubosc || 1) * xh * 0.1;
+    const dash = styl.kreska === 'kropki' ? `stroke-dasharray="0.1 ${(gr * 2).toFixed(1)}"`
+      : styl.kreska === 'kreski' ? `stroke-dasharray="${(gr * 1.6).toFixed(1)} ${(gr * 1.6).toFixed(1)}"` : '';
+    let out = '';
+    uklad.elementy.forEach((e) => {
+      if (!e.g) return;
+      const tx = x0 + e.x, ty = baza - e.g.base * e.s;
+      // Grubość linii podajemy w jednostkach ekranu, więc przeliczamy ją na jednostki litery.
+      const sw = (gr / e.s).toFixed(1);
+      const dashL = dash ? dash.replace(/"([^"]+)"/, (_, v) => '"' + v.split(' ').map((n) => (parseFloat(n) / e.s).toFixed(1)).join(' ') + '"') : '';
+      out += `<g transform="translate(${tx.toFixed(1)},${ty.toFixed(1)}) scale(${e.s.toFixed(4)})" fill="none" stroke="${styl.kolor}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" ${dashL}>`;
+      out += e.g.d.map((d) => `<path d="${d}"/>`).join('');
+      if (styl.start) {
+        e.g.d.forEach((d) => {
+          const m = d.match(/^M\s*([-\d.]+)[ ,]+([-\d.]+)/);
+          if (m) out += `<circle cx="${m[1]}" cy="${m[2]}" r="${(gr * 1.25 / e.s).toFixed(1)}" fill="${styl.kolorStart || '#2e9e5b'}" stroke="none"/>`;
+        });
+      }
+      out += '</g>';
+    });
+    return out;
+  };
+})();

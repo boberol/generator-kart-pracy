@@ -9,7 +9,7 @@
     opis: 'Połącz obrazek z pasującym wyrazem.',
     opcje: [
       { id: 'ile', etykieta: 'Liczba par', wybory: [{ value: '4', label: '4 pary' }, { value: '6', label: '6 par' }, { value: '8', label: '8 par' }], domyslnie: '6' },
-      { id: 'temat', etykieta: 'Temat', wybory: KP.tematy, domyslnie: 'zwierzeta' },
+      { id: 'temat', etykieta: 'Temat', wybory: KP.tematyZObrazkami, domyslnie: 'zwierzeta' },
       { id: 'litery', etykieta: 'Litery', wybory: KP.WIELKOSC, domyslnie: 'wielkie' },
     ],
 

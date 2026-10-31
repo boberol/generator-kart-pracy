@@ -10,6 +10,7 @@
     opcje: [
       { id: 'poziom', etykieta: 'Poziom trudności', wybory: KP.POZIOMY, domyslnie: 'latwy' },
       { id: 'temat', etykieta: 'Temat', wybory: KP.tematy, domyslnie: 'wszystkie' },
+      KP.opcjaWlasne,
       { id: 'litery', etykieta: 'Litery', wybory: KP.WIELKOSC, domyslnie: 'wielkie' },
     ],
 
@@ -18,8 +19,8 @@
       const ile = poz === 'latwy' ? 6 : 8;
       const brak = poz === 'trudny' ? 2 : 1;
       const maxDl = poz === 'latwy' ? 5 : 12;
-      let kandydaci = KP.slowaZTematu(o.temat).filter((w) => w.slowo.length <= maxDl && w.slowo.length > brak + 1);
-      if (kandydaci.length < ile) kandydaci = KP.slowaZTematu(o.temat).filter((w) => w.slowo.length > brak + 1);
+      let kandydaci = KP.slowaZTematu(o.temat, o).filter((w) => w.slowo.length <= maxDl && w.slowo.length > brak + 1);
+      if (kandydaci.length < ile) kandydaci = KP.slowaZTematu(o.temat, o).filter((w) => w.slowo.length > brak + 1);
       const wybrane = R.shuffle(kandydaci).slice(0, ile);
       const bank = [];
 

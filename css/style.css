@@ -74,6 +74,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
   font-weight: 400; padding: 8px 10px; border: 2px solid var(--linia); border-radius: 10px; background: #fff;
 }
 .pole-opcji textarea { resize: vertical; }
+.pole-opcji.szerokie { grid-column: 1 / -1; }
+.pole-kolor input { height: 40px; padding: 3px; cursor: pointer; }
+.strona.czarno-biala { filter: grayscale(1) contrast(1.15); }
 .pole-opcji :focus-visible, .pole-check input:focus-visible { outline: 3px solid #7aa7e0; outline-offset: 1px; }
 .pole-check { display: flex; gap: 8px; align-items: center; font-weight: 600; font-size: 0.9rem; padding-bottom: 10px; }
 .pole-check[hidden] { display: none; }
@@ -111,7 +114,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .strona-rozw .karta-glowa { color: #999; font-size: 10pt; }
 .rys { width: 100%; height: auto; max-height: 100%; display: block; flex: 0 1 auto; min-height: 0; }
 .rys.pelna { flex: 1; }
-.rys text { font-family: var(--pismo-ui); fill: #1f2a44; }
+.rys text { font-family: var(--pismo-ui); }
+.rys text:not([fill]) { fill: #1f2a44; }
 .odstep { height: 8mm; flex: none; }
 .podpis { font-size: 14pt; margin: 5mm 0 0; text-align: center; }
 .blad { padding: 40px; background: #fff; border-radius: var(--promien); }
@@ -122,14 +126,6 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .kropki { max-height: 205mm; }
 .linia-pisania { vertical-align: bottom; }
 
-/* Pisanie po śladzie */
-.pisanie .pole { fill: #fff6d6; }
-.pisanie .lin-g { stroke: #9ab; stroke-width: 0.8; }
-.pisanie .lin-s { stroke: #9ab; stroke-width: 0.8; stroke-dasharray: 4 3; }
-.pisanie .lin-b { stroke: #d66; stroke-width: 1.2; }
-.pisanie .kratka-l { stroke: #b9cde0; stroke-width: 0.6; }
-.pisanie text.pis-wzor { fill: #1f2a44; }
-.pisanie text.pis-slad { fill: #c4c9d3; }
 
 /* Wykreślanka */
 .wykreslanka { border-collapse: collapse; margin: 0 auto; }

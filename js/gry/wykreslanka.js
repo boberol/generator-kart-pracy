@@ -18,6 +18,7 @@
     opcje: [
       { id: 'poziom', etykieta: 'Poziom trudności', wybory: KP.POZIOMY, domyslnie: 'latwy' },
       { id: 'temat', etykieta: 'Temat', wybory: KP.tematy, domyslnie: 'zwierzeta' },
+      KP.opcjaWlasne,
       { id: 'litery', etykieta: 'Litery', wybory: KP.WIELKOSC, domyslnie: 'wielkie' },
     ],
 
@@ -26,7 +27,7 @@
       const N = u.rozmiar;
       const siatka = Array.from({ length: N }, () => new Array(N).fill(null));
       const trafienia = new Set();
-      const kandydaci = R.shuffle(KP.slowaZTematu(o.temat).filter((w) => w.slowo.length >= 3 && w.slowo.length <= N));
+      const kandydaci = R.shuffle(KP.slowaZTematu(o.temat, o).filter((w) => w.slowo.length >= 3 && w.slowo.length <= N));
       const umieszczone = [];
 
       for (const w of kandydaci) {
