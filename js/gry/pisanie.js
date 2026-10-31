@@ -33,7 +33,6 @@
       { id: 'kolejnosc', etykieta: 'Kolejność', wybory: KP.KOLEJNOSCI, domyslnie: 'wpisana' },
       { id: 'pismo', etykieta: 'Pismo', wybory: Object.keys(PISMA).map((k) => ({ value: k, label: PISMA[k].nazwa })), domyslnie: 'literki' },
       { id: 'slad', etykieta: 'Wygląd śladu', wybory: [{ value: 'kropki', label: 'Kropki' }, { value: 'kreski', label: 'Kreski' }, { value: 'pelna', label: 'Jasna linia' }], domyslnie: 'kropki', gdy: { pismo: 'literki' } },
-      { id: 'start', etykieta: 'Punkt startowy', wybory: [{ value: 'tak', label: 'Pokaż (zielona kropka)' }, { value: 'nie', label: 'Ukryj' }], domyslnie: 'tak', gdy: { pismo: 'literki' } },
       { id: 'liniatura', etykieta: 'Liniatura', wybory: [{ value: 'trzy', label: 'Linie z polem środkowym' }, { value: 'kratka', label: 'Kratka' }, { value: 'jedna', label: 'Jedna linia' }, { value: 'brak', label: 'Bez linii' }], domyslnie: 'trzy' },
       { id: 'rozmiar', etykieta: 'Wielkość liter', wybory: [{ value: 'duze', label: 'Duże (przedszkole)' }, { value: 'srednie', label: 'Średnie (klasa 1)' }, { value: 'male', label: 'Małe (klasa 2–3)' }], domyslnie: 'duze' },
       { id: 'powtorzenia', etykieta: 'Ile razy powtórzyć', wybory: [{ value: 'wiersz', label: 'Do końca linii' }, { value: '3', label: '3 razy' }, { value: '2', label: '2 razy' }, { value: '1', label: '1 raz' }], domyslnie: 'wiersz' },
@@ -119,7 +118,7 @@
         }
         const cfg = {
           t: w.tekst, tryb: w.tryb, c: w.calosc ? 1 : 0, x: start, max: W - mx - x * 0.3, y: baza, xh: x,
-          p: pismo, r: PISMA[pismo].rodzina, ile: o.powtorzenia || 'wiersz', s: o.slad || 'kropki', st: o.start !== 'nie',
+          p: pismo, r: PISMA[pismo].rodzina, ile: o.powtorzenia || 'wiersz', s: o.slad || 'kropki', st: false,
           kw: o.kWzor || '#1f2a44', ks: o.kSlad || '#8a93a6',
         };
         grupy += `<g class="pis-wiersz" data-cfg="${KP.esc(JSON.stringify(cfg))}"></g>`;
@@ -128,9 +127,7 @@
       const opisLiter = o.tresc === 'litera' ? Array.from(new Set(Array.from(String(o.litery || 'a')).filter((c) => /\p{L}/u.test(c)))).join(', ') : '';
       return {
         tytul: opisLiter ? `Piszę: ${opisLiter}` : 'Pisanie po śladzie',
-        polecenie: literki && o.start !== 'nie'
-          ? 'Zacznij od zielonej kropki. Pisz po śladzie, a w pustych miejscach napisz samodzielnie.'
-          : 'Pisz po śladzie, zaczynając od wzoru. W pustych miejscach napisz samodzielnie.',
+        polecenie: 'Pisz po śladzie, zaczynając od wzoru. W pustych miejscach napisz samodzielnie.',
         tresc: `<svg class="rys pelna pisanie" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">${tlo}${grupy}</svg>`,
         rozwiazanie: null,
         po: ulozWiersze,

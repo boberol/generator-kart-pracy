@@ -5,7 +5,7 @@ Strona do tworzenia kart pracy do druku (A4) dla dzieci w wieku przedszkolnym i 
 ## Rodzaje kart
 
 **Pisanie i grafomotoryka**
-- **Pisanie po śladzie** – wybrane litery w dowolnej kolejności (z sylabami i wyrazami), wyrazy z obrazkami lub własne, albo własny tekst. Domyślne pismo to **Literki** (jednokreskowe litery z `js/literki.js`): ślad z kropek lub kresek i zielony punkt startowy. Do wyboru także pismo pisane (Playwrite Polska) i drukowane (Andika). Liniatura z polem środkowym, kratka, jedna linia lub bez linii; trzy wielkości; liczba powtórzeń; miejsce na samodzielne pisanie; własne kolory wzoru, śladu, pola i linii.
+- **Pisanie po śladzie** – wybrane litery w dowolnej kolejności (z sylabami i wyrazami), wyrazy z obrazkami lub własne, albo własny tekst. Domyślne pismo to **Literki** (jednokreskowe litery z `js/literki.js`): ślad z kropek lub kresek. Do wyboru także pismo pisane (Playwrite Polska) i drukowane (Andika). Liniatura z polem środkowym, kratka, jedna linia lub bez linii; trzy wielkości; liczba powtórzeń; miejsce na samodzielne pisanie; własne kolory wzoru, śladu, pola i linii.
 - **Szlaczki** – fale, zygzaki, zamki, łuki, mostki, pętelki, ząbki, sprężynki; wzór + ślad + miejsce na samodzielne dokończenie; kolejność losowa lub od najłatwiejszych; własne kolory.
 - **Papier w linie i kratkę** – puste strony: linie z polem środkowym, pojedyncze linie, kratka (1 cm / 5 mm), siatka kropek, rysunek + linie, pięciolinia; tytuł, margines, kolory.
 - **Prowadzenie linii** – prowadzenie kredki po kropkowanej ścieżce od obrazka do obrazka.
