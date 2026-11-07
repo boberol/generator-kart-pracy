@@ -2,65 +2,160 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Generator kart pracy dla dzieci</title>
-  <meta name="description" content="Darmowy generator kart pracy dla dzieci: szlaczki, pisanie po śladzie, labirynty, połącz kropki, wykreślanki i działania. Gotowe do druku na A4.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Nunito:wght@400;600;800&family=Playwrite+PL:wght@300&display=swap">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Generator kart pracy dla dzieci – szlaczki, pisanie po śladzie, do druku</title>
+  <meta name="description" content="Generator kart pracy dla dzieci po polsku: pisanie po śladzie, szlaczki, dyktando graficzne, papier w linie i kratkę, labirynty, połącz kropki, wykreślanki i działania. Gotowe do druku na A4.">
+  <meta name="theme-color" content="#c9431f">
+  <meta property="og:title" content="Generator kart pracy dla dzieci">
+  <meta property="og:description" content="Karty pracy do druku: pisanie po śladzie, szlaczki, dyktando graficzne i wiele innych. Po polsku, bez rejestracji.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pl_PL">
+  <link rel="icon" href="ikona.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preload" href="fonts/nunito-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/nunito-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/core.js" defer></script>
+  <script src="js/literki.js" defer></script>
+  <script src="js/gry/pisanie.js" defer></script>
+  <script src="js/gry/szlaczki.js" defer></script>
+  <script src="js/gry/kratka.js" defer></script>
+  <script src="js/gry/sciezki.js" defer></script>
+  <script src="js/gry/papier.js" defer></script>
+  <script src="js/gry/kropki.js" defer></script>
+  <script src="js/gry/labirynt.js" defer></script>
+  <script src="js/gry/przerysuj.js" defer></script>
+  <script src="js/gry/litery.js" defer></script>
+  <script src="js/gry/rozsypanka.js" defer></script>
+  <script src="js/gry/wykreslanka.js" defer></script>
+  <script src="js/gry/dopasuj.js" defer></script>
+  <script src="js/gry/matematyka.js" defer></script>
+  <script src="js/gry/sudoku.js" defer></script>
+  <script src="js/ikony.js" defer></script>
+  <script src="js/app.js" defer></script>
 </head>
 <body>
-  <header class="naglowek-strony">
-    <div class="logo" aria-hidden="true">✂️</div>
-    <div>
-      <h1>Generator kart pracy</h1>
-      <p>Wybierz zabawę, ustaw poziom i wydrukuj. Każde kliknięcie „Losuj” tworzy nową kartę.</p>
+  <a class="pomin" href="#ustawienia">Przejdź do ustawień karty</a>
+
+  <header class="topbar">
+    <a class="marka" href="./" aria-label="Generator kart pracy – strona główna">
+      <svg class="marka-znak" viewBox="0 0 40 40" aria-hidden="true">
+        <rect width="40" height="40" rx="11" fill="var(--brand)"/>
+        <path d="M9 27c3-6 5-6 7 0s4 6 7 0 4-6 7 0" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="0.1 4.6"/>
+        <path d="M9 17c3-6 5-6 7 0s4 6 7 0 4-6 7 0" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/>
+      </svg>
+      <span class="marka-tekst"><b>Generator kart pracy</b><small>dla dzieci · do druku A4</small></span>
+    </a>
+    <div class="topbar-akcje">
+      <button id="pomoc" type="button" class="btn btn-ghost btn-ikona-tylko" aria-label="Jak to działa?" title="Jak to działa?" data-ikona="pomoc"></button>
+      <button id="kopiuj-link" type="button" class="btn btn-ghost" data-ikona="link"><span class="tylko-szeroki">Kopiuj link</span></button>
+      <button id="drukuj" type="button" class="btn btn-primary" data-ikona="drukuj">Drukuj / PDF</button>
     </div>
   </header>
 
-  <main class="uklad">
-    <aside class="panel">
-      <nav id="lista-gier" aria-label="Rodzaje kart"></nav>
-    </aside>
-
-    <section class="glowna">
-      <div id="ustawienia" class="ustawienia">
-        <h2 id="nazwa-gry"></h2>
-        <div id="opcje" class="opcje"></div>
-        <div class="opcje opcje-wspolne">
-          <label class="pole-opcji"><span>Podpis na karcie (np. klasa, przedszkole)</span><input id="naglowek" type="text" maxlength="80" placeholder="np. Grupa Biedronki"></label>
-          <label class="pole-opcji"><span>Numer karty</span><input id="nr-karty" type="number" min="1" inputmode="numeric" title="Ten sam numer = ta sama karta"></label>
-          <label class="pole-check" id="pole-rozw"><input id="rozw" type="checkbox" checked> Dołącz stronę z rozwiązaniem</label>
-          <label class="pole-check"><input id="cb" type="checkbox"> Druk czarno-biały</label>
+  <h1 class="sr-only">Generator kart pracy dla dzieci</h1>
+  <div class="app">
+    <nav class="katalog" id="katalog" aria-label="Rodzaje kart">
+      <button type="button" class="katalog-przelacznik" id="katalog-przelacznik" aria-expanded="false" aria-controls="katalog-lista">
+        <span class="katalog-przelacznik-etykieta">Rodzaj karty</span>
+        <span class="katalog-przelacznik-wybor" id="katalog-wybor"></span>
+        <span class="chevron" data-ikona="chevron" aria-hidden="true"></span>
+      </button>
+      <div class="katalog-lista" id="katalog-lista">
+        <div class="szukaj">
+          <span data-ikona="szukaj" aria-hidden="true"></span>
+          <input id="szukaj" type="search" placeholder="Szukaj karty…" aria-label="Szukaj rodzaju karty" autocomplete="off">
         </div>
-        <div class="przyciski">
-          <button id="losuj" type="button" class="btn btn-drugi">🎲 Losuj nową kartę</button>
-          <button id="drukuj" type="button" class="btn btn-glowny">🖨️ Drukuj / zapisz PDF</button>
-        </div>
+        <div id="lista-gier"></div>
+        <p class="pusto" id="brak-wynikow" hidden>Brak kart pasujących do wyszukiwania.</p>
       </div>
+    </nav>
 
-      <div class="obszar-podgladu">
-        <div id="podglad" class="podglad" aria-live="polite"></div>
-      </div>
+    <section class="ustawienia" id="ustawienia" tabindex="-1" aria-labelledby="nazwa-gry">
+      <header class="ustawienia-glowa">
+        <span class="ustawienia-ikona" id="ikona-gry" aria-hidden="true"></span>
+        <div>
+          <h2 id="nazwa-gry">Generator kart pracy</h2>
+          <p id="opis-gry"></p>
+        </div>
+      </header>
+
+      <form id="formularz" novalidate>
+        <fieldset class="sekcja">
+          <legend>Treść karty</legend>
+          <div id="opcje" class="pola"></div>
+        </fieldset>
+
+        <details class="sekcja sekcja-zwijana" id="sekcja-kolory">
+          <summary><span>Kolory</span><span class="chevron" data-ikona="chevron" aria-hidden="true"></span></summary>
+          <div id="opcje-kolory" class="pola pola-kolory"></div>
+          <button type="button" class="btn-tekst" id="reset-kolory" data-ikona="reset">Przywróć kolory</button>
+        </details>
+
+        <fieldset class="sekcja">
+          <legend>Wydruk</legend>
+          <div class="pola">
+            <label class="pole szerokie"><span class="etykieta">Podpis na karcie</span>
+              <input id="naglowek" type="text" maxlength="80" placeholder="np. Grupa Biedronki, klasa 1b" autocomplete="off"></label>
+            <label class="pole"><span class="etykieta">Liczba kart</span>
+              <select id="ile-kart">
+                <option value="1">1 karta</option><option value="2">2 karty</option><option value="3">3 karty</option>
+                <option value="4">4 karty</option><option value="5">5 kart</option><option value="6">6 kart</option>
+                <option value="8">8 kart</option><option value="10">10 kart</option>
+              </select></label>
+            <label class="pole"><span class="etykieta">Numer karty</span>
+              <input id="nr-karty" type="number" min="1" max="999999999" inputmode="numeric" aria-describedby="nr-pomoc"></label>
+            <p class="pomoc szerokie" id="nr-pomoc">Ten sam numer i ustawienia dają zawsze tę samą kartę.</p>
+            <label class="przelacznik szerokie" id="pole-rozw"><input id="rozw" type="checkbox" checked><span class="suwak" aria-hidden="true"></span><span>Strona z rozwiązaniem</span></label>
+            <label class="przelacznik szerokie"><input id="cb" type="checkbox"><span class="suwak" aria-hidden="true"></span><span>Druk czarno-biały</span></label>
+          </div>
+        </fieldset>
+
+        <div class="ustawienia-stopka">
+          <button type="button" class="btn-tekst" id="reset-wszystko" data-ikona="reset">Przywróć ustawienia domyślne</button>
+        </div>
+      </form>
     </section>
-  </main>
 
-  <script src="js/core.js"></script>
-  <script src="js/literki.js"></script>
-  <script src="js/gry/pisanie.js"></script>
-  <script src="js/gry/szlaczki.js"></script>
-  <script src="js/gry/sciezki.js"></script>
-  <script src="js/gry/papier.js"></script>
-  <script src="js/gry/kropki.js"></script>
-  <script src="js/gry/labirynt.js"></script>
-  <script src="js/gry/przerysuj.js"></script>
-  <script src="js/gry/litery.js"></script>
-  <script src="js/gry/rozsypanka.js"></script>
-  <script src="js/gry/wykreslanka.js"></script>
-  <script src="js/gry/dopasuj.js"></script>
-  <script src="js/gry/matematyka.js"></script>
-  <script src="js/gry/sudoku.js"></script>
-  <script src="js/app.js"></script>
+    <main class="biurko" id="biurko" aria-label="Podgląd karty">
+      <div class="pasek-podgladu">
+        <p class="licznik" id="licznik" aria-live="polite"></p>
+        <div class="powieksz" role="group" aria-label="Powiększenie podglądu">
+          <button type="button" class="btn btn-ghost btn-ikona-tylko" id="pomniejsz" aria-label="Pomniejsz" data-ikona="minus"></button>
+          <button type="button" class="btn btn-ghost btn-zoom" id="dopasuj" title="Dopasuj do szerokości">100%</button>
+          <button type="button" class="btn btn-ghost btn-ikona-tylko" id="powieksz" aria-label="Powiększ" data-ikona="plus"></button>
+        </div>
+        <button id="losuj" type="button" class="btn btn-secondary" data-ikona="losuj">Losuj nową</button>
+      </div>
+      <div class="obszar-podgladu" id="obszar-podgladu">
+        <div id="podglad" class="podglad"></div>
+      </div>
+    </main>
+  </div>
+
+  <div class="pasek-mobilny" aria-label="Szybkie akcje">
+    <button id="losuj-m" type="button" class="btn btn-secondary" data-ikona="losuj">Losuj</button>
+    <button id="drukuj-m" type="button" class="btn btn-primary" data-ikona="drukuj">Drukuj / PDF</button>
+  </div>
+
+  <dialog id="okno-pomocy" class="okno" aria-labelledby="pomoc-tytul">
+    <form method="dialog">
+      <header class="okno-glowa">
+        <h2 id="pomoc-tytul">Jak to działa?</h2>
+        <button class="btn btn-ghost btn-ikona-tylko" value="zamknij" aria-label="Zamknij" data-ikona="x"></button>
+      </header>
+      <ol class="kroki">
+        <li><b>Wybierz rodzaj karty</b> z listy, np. pisanie po śladzie, szlaczki albo dyktando graficzne.</li>
+        <li><b>Ustaw treść i wygląd</b>: litery, wyrazy, wielkość, liniaturę i kolory. Podgląd zmienia się od razu.</li>
+        <li><b>Kliknij „Losuj nową”</b>, żeby dostać inną wersję. Numer karty pozwala wrócić do tej samej.</li>
+        <li><b>Wybierz liczbę kart</b>, jeśli chcesz wydrukować od razu kilka różnych.</li>
+        <li><b>Drukuj albo zapisz jako PDF</b>. Każda karta to osobna strona A4. W oknie druku ustaw skalę 100% i wyłącz nagłówki.</li>
+      </ol>
+      <p class="okno-uwaga">Ustawienia zapisują się w przeglądarce i w adresie strony. Przycisk „Kopiuj link” pozwala wysłać dokładnie tę kartę innej osobie.</p>
+      <p class="okno-uwaga">Skróty: <kbd>N</kbd> nowa karta, <kbd>Ctrl</kbd>+<kbd>P</kbd> druk, <kbd>+</kbd>/<kbd>−</kbd> powiększenie.</p>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>

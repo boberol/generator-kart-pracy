@@ -1,0 +1,14 @@
+{
+  "name": "Generator kart pracy dla dzieci",
+  "short_name": "Karty pracy",
+  "description": "Karty pracy do druku: pisanie po śladzie, szlaczki, dyktando graficzne i więcej.",
+  "lang": "pl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f4f0",
+  "theme_color": "#c9431f",
+  "icons": [
+    { "src": "ikona.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
