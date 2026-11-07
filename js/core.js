@@ -33,6 +33,17 @@
     return R;
   };
 
+  /* Kilka kart naraz: kolejne numery = kolejne, różne karty. */
+  KP.utworzKarty = function (g, opcje, nr, ile) {
+    const wyniki = [];
+    for (let i = 0; i < (ile || 1); i++) {
+      const n = nr + i;
+      const R = KP.losowanie(n ^ KP.hashTekstu(g.id));
+      wyniki.push({ nr: n, wynik: g.generuj(Object.assign({}, opcje), R) });
+    }
+    return wyniki;
+  };
+
   KP.hashTekstu = function (s) {
     let h = 2166136261;
     for (let i = 0; i < s.length; i++) {
